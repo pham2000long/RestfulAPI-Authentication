@@ -30,3 +30,4 @@ Route::group([
     Route::post('resetPassword','ChangePasswordController@passwordResetProcess');
 });
 Route::post('sendEmail', 'MailController@sendEmail');
+Route::get('user', 'UserController@index');
