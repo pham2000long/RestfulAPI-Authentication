@@ -30,4 +30,18 @@ Route::group([
     Route::post('resetPassword','ChangePasswordController@passwordResetProcess');
 });
 Route::post('sendEmail', 'MailController@sendEmail');
-Route::get('user', 'UserController@index');
+
+// get all user
+Route::get('users', 'UserController@index');
+
+// get specific user detail
+Route::get('user/{id}', 'UserController@getUserById');
+
+// add User
+Route::post('addUser','UserController@createUser');
+
+// update User
+Route::put('updateUser/{id}','UserController@updateUser');
+
+// delete
+Route::delete('deleteUser/{id}', 'UserController@deleteUser');
