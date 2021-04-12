@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\UserRepository;
+use App\Http\Resources\UserResource;
+
 
 class UserController extends Controller
 {
+    public $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function index()
     {
-        return response()->json(User::all(),200);
+        $users = $this->userRepository->getAllUser();
+        $users = UserResource::collection($users);
+        return response($users,201);
     }
 
     public function getUserById($id){
