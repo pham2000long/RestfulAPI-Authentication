@@ -5,64 +5,73 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\UserRepository;
 use App\Http\Resources\UserResource;
-
+use App\Repositories\UserRepositoryInterface;
 
 class UserController extends Controller
 {
     public $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
     public function index()
     {
-        $users = $this->userRepository->getAllUser();
-        $users = UserResource::collection($users);
+        $users = $this->userRepository->getAll();
         return response($users,201);
     }
 
     public function getUserById($id){
-        $user = User::find($id);
+        $user = $this->userRepository->find($id);
         if(is_null($user)){
             return response()->json([
                 'error'=>'Don\'t have this user'
             ],404);
         }
-        return response()->json($user::find($id),200);
+        return response()->json($user,200);
     }
 
     public function createUser(Request $request){
-        $user = User::create($request->all());
+        $data = $request->all();
+        $user = $this->userRepository->create($data);
         return response($user,201);
     }
 
     public function updateUser(Request $request, $id){
-        $user = User::find($id);
+        $data = $request->all();
+        $user = $this->userRepository->find($id);
         if(is_null($user)){
             return response()->json([
                 'error'=>'Don\'t have this user'
             ],404);
         }
-        $user->update($request->all());
+
+        $user = $this->userRepository->update($id, $data);
+
+        if($user){
+            return response()->json([
+                'message'=>'updated succesfully'
+            ]);
+        }
         return response()->json([
-            'message'=>'updated succesfully'
-        ]);
+            'error'=>'Not updated'
+        ],404);
+
     }
 
-    public function deleteUser(Request $request, $id){
-        $user = User::find($id);
+    public function deleteUser($id){
+
+        $user = $this->userRepository->find($id);
         if(is_null($user)){
             return response()->json([
                 'error'=>'Don\'t have this user'
             ],404);
         }
-        $user->delete();
+        $user = $this->userRepository->find($id);
         return response()->json([
-            'message'=>'deleted succesfully'
-        ]);
+            'success'=>'Deleted Successful'
+        ],404);
     }
 
 }

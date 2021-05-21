@@ -2,26 +2,24 @@
 
 namespace App\Repositories;
 
+
+//use Your Model
+
+/**
+ * Class UserRepositoryInterface.
+ */
 interface UserRepositoryInterface
 {
     /**
-     * Get all
-     * @return mixed
+     * @return string
+     *  Return the model
      */
+    public function model();
+
     public function getAll();
 
-    /**
-     * Get one
-     * @param $id
-     * @return mixed
-     */
     public function find($id);
 
-    /**
-     * Create
-     * @param array $attributes
-     * @return mixed
-     */
     public function create($attributes = []);
 
     /**

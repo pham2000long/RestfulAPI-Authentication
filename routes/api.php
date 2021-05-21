@@ -44,7 +44,7 @@ Route::group([
     Route::post('addUser','UserController@createUser');
 
     // update User
-    Route::put('updateUser/{id}','UserController@updateUser');
+    Route::post('updateUser/{id}','UserController@updateUser');
 
     // delete
     Route::delete('deleteUser/{id}', 'UserController@deleteUser');
